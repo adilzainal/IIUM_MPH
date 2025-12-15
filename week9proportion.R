@@ -1,5 +1,5 @@
 #--------------------------------------------------------
-# Biostatistic practical using R Software week 9 compare prroportion (2025)
+# Biostatistic practical using R Software week 10 compare prroportion (2025)
 #--------------------------------------------------------
 # Muhammad Adil ZA
 #--------------------------------------------------------
@@ -12,9 +12,15 @@
 # mcnemar test
 # cochran q test
 # z test compare 2 proportion with 95% ci
+# measure 95% ci
 
+########################################################################################
+
+setwd("~/Desktop/Medical Statistic/R MPH IIUM")
 library(foreign)  # library to read .sav (SPSS) and .dta (STATA) files
 data.sav = read.spss("healthstatus.sav", to.data.frame = TRUE)  #SPSS
+
+########################################################################################
 
 #chi square test for categorical variable
 tbl = table(data.sav$sex, data.sav$hpt)
@@ -27,6 +33,8 @@ tbl2
 prop.table(tbl2,1)
 chisq.test(tbl2) 
 
+########################################################################################
+
 #yates correction for correction works when at least one of the cell have less than 5 
 t3 = table(data.sav$sex, data.sav$smoking)
 t3
@@ -35,6 +43,8 @@ chisq.test(t3)
 
 #fisher exact test when small sample size (when more than 20% of cells have exp frequencies less than 5)
 fisher.test(data.sav$sex,data.sav$smoking)
+
+########################################################################################
 
 #chi square test for trend
 #Performs chi-squared test for trend in proportion. 
@@ -63,12 +73,16 @@ xtab
 # Compare the proportion of survived between groups
 prop_trend_test(xtab)
 
+########################################################################################
+
 #mcnemar test for binary paired categorical data
 HPTbtw <-matrix(c(30,12,40,18),nrow = 2,
                 dimnames = list("HPT before" = c("normal", "hypertension"),
                                 "HPT after" = c("normal", "hypertension")))
 HPTbtw
 mcnemar.test(HPTbtw)
+
+########################################################################################
 
 #cochran q test 
 # Create a data frame
@@ -84,8 +98,24 @@ install.packages("reshape")
 library(reshape)
 data_long <- melt(data, id.vars = "Subject", variable.name = "Condition", value.name = "Outcome")
 
+
 # Perform Cochran's Q test
 cochran.qtest(value ~ variable | Subject, data = data_long)
+
+data <- data.frame(
+  Subject = 1:10,
+  Method_A = c(1,1,0,1,0,1,0,1,0,1),
+  Method_B = c(1,1,1,1,1,1,0,1,1,1),
+  Method_C = c(0,0,0,1,0,0,0,0,0,1)
+)
+data
+data_long <- melt(data, id.vars = "Subject", variable.name = "Condition", value.name = "Outcome")
+cochran.qtest(value ~ variable | Subject, data = data_long)
+
+# Perform Cochran's Q test
+cochran.qtest(value ~ variable | Subject, data = data_long, p.method = "bonferroni")
+
+########################################################################################
 
 # z test with 95% ci 
 res <- prop.test(x = c(490, 400), n = c(500, 500))
@@ -98,6 +128,7 @@ prop.test(x = c(490, 400), n = c(500, 500),
 prop.test(x = c(490, 400), n = c(500, 500),
           alternative = "less")
 
+########################################################################################
 
 install.packages("DescTools")
 library(DescTools)
@@ -113,4 +144,6 @@ BinomCI(x=c(42, 35, 23, 22), n=c(50, 60, 70, 80), method="clopper-pearson")
 ## other method = c("wilson", "wald", "waldcc", "agresti-coull", "jeffreys",
            "modified wilson", "wilsoncc","modified jeffreys",
            "clopper-pearson", "arcsine", "logit", "witting", "pratt", 
-           "midp", "lik", "blaker"),
+           "midp", "lik", "blaker").
+
+########################################################################################
