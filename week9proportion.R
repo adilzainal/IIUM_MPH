@@ -1,5 +1,5 @@
 #--------------------------------------------------------
-# Biostatistic practical using R Software week 10 compare prroportion (2025)
+# Biostatistic practical using R Software week 10 compare proportion (2025)
 #--------------------------------------------------------
 # Muhammad Adil ZA
 #--------------------------------------------------------
@@ -35,7 +35,7 @@ chisq.test(tbl2)
 
 ########################################################################################
 
-#yates correction for correction works when at least one of the cell have less than 5 
+#yates correction for correction works when at least one of the cell have less than 5 , more conservative
 t3 = table(data.sav$sex, data.sav$smoking)
 t3
 prop.table(t3, 1)
@@ -82,6 +82,20 @@ HPTbtw <-matrix(c(30,12,40,18),nrow = 2,
 HPTbtw
 mcnemar.test(HPTbtw)
 
+# Check discordant counts from the 'data_matrix' example
+discordant_b <- HPTbtw[1, 2]
+discordant_c <- HPTbtw[2, 1]
+total_discordant <- discordant_b + discordant_c
+
+print(paste("Count in Cell B:", discordant_b))
+print(paste("Count in Cell C:", discordant_c))
+print(paste("Total discordant pairs:", total_discordant))
+
+#if discordant pair less than 25 use exact mcnemar test
+
+install.packages(exact2x2)
+library(exact2x2)
+mcnemar.exact(HPTbtw)
 ########################################################################################
 
 #cochran q test 
@@ -139,7 +153,7 @@ x2 <- 65 # Number of successes in group 2
 n2 <- 100 # Number of trials in group 2
 
 # Calculate the confidence interval for the difference in proportions
-BinomCI(x=c(42, 35, 23, 22), n=c(50, 60, 70, 80), method="clopper-pearson")
+BinomCI(x=c(42, 35, 23, 22), n=c(50, 60, 70, 80), method="clopper-pearson") # most conservative
 
 ## other method = c("wilson", "wald", "waldcc", "agresti-coull", "jeffreys",
            "modified wilson", "wilsoncc","modified jeffreys",
@@ -147,3 +161,5 @@ BinomCI(x=c(42, 35, 23, 22), n=c(50, 60, 70, 80), method="clopper-pearson")
            "midp", "lik", "blaker").
 
 ########################################################################################
+
+
