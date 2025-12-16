@@ -28,7 +28,7 @@ tbl
 prop.table(tbl,2)
 chisq.test(tbl) 
 
-tbl2 = table(data.sav$BMIc, data.sav$hpt)
+tbl2 = table(data.sav$BMIcat, data.sav$hpt)
 tbl2
 prop.table(tbl2,1)
 chisq.test(tbl2) 
