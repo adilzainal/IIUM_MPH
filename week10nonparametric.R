@@ -5,9 +5,14 @@
 #--------------------------------------------------------
 # Bivariate data analysis continued
 #--------------------------------------------------------
+
 #Non parametric test (mann whitney, kruskall wallis, wilcoxon, spearman, friedman)
 
+setwd("~/Desktop/Medical Statistic/R MPH IIUM")
+library(foreign)  # library to read .sav (SPSS) and .dta (STATA) files
+data.sav = read.spss("healthstatus.sav", to.data.frame = TRUE)  #SPSS
 
+############################################################
 #mann whitney u test (non parametric for independent t-test)
 library(psych)
 library(purrr)
