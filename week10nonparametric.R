@@ -5,8 +5,8 @@
 #--------------------------------------------------------
 # Bivariate data analysis continued
 #--------------------------------------------------------
-
 #Non parametric test (mann whitney, kruskall wallis, wilcoxon, spearman, friedman)
+
 
 setwd("~/Desktop/Medical Statistic/R MPH IIUM")
 library(foreign)  # library to read .sav (SPSS) and .dta (STATA) files
@@ -17,7 +17,9 @@ data.sav = read.spss("healthstatus.sav", to.data.frame = TRUE)  #SPSS
 #3. wilcoxon signed rank test
 #4. correlation (spearman)
 #5. friedman test 
-############################################################
+
+########################################################################################
+
 #mann whitney u test (non parametric for independent t-test)
 library(psych)
 library(purrr)
@@ -26,24 +28,25 @@ data.sav %>%
   group_by(data.sav$sex) %>% 
   summary(data.sav$wt)
 describeBy(data.sav$wt, data.sav$sex)
-stat.desc(wt, sex)
+library(pastecs)
 attach(data.sav)
+stat.desc(sex, wt)
 wilcox.test(wt ~ sex, data=data.sav) 
 
-describe.by(data.sav$wt2, data.sav$sex)
+describeBy(data.sav$wt2, data.sav$sex)
 wilcox.test(wt2 ~ sex, data=data.sav)
-
+library("ggpubr")
 ggboxplot(data.sav, x = "sex", y = "wt2", 
-          color = "sex", palette = c("#FF3300", "#E7B800"),
+          color = "sex", palette = c("#FF3300", "#964B00"),
           order = c("Female", "Male"),
           ylab = "Weight after intervention (kg)", xlab = "Sex")
+
+########################################################################################
 
 #kruskall wallis (non parametric for anova)
 describeBy(data.sav$wt, data.sav$exercise)
 kruskal.test(wt ~ exercise, data = data.sav)
 attach(data.sav)
-describe.by(data.sav$wt, data.sav$exercise)
-kruskal.test(wt ~ exercise, data = data.sav)
 pairwise.wilcox.test(data.sav$wt, data.sav$exercise,
                      p.adjust.method = "BH")   #post hoc test if the p value is significant
 
@@ -64,10 +67,14 @@ ggboxplot(data.sav, x = "exercise", y = "sbp",
           order = c("Low", "Moderate", "High"),
           ylab = "Systolic", xlab = "Exercise")
 
+########################################################################################
+
 #wilcoxon signed rank test (non parametric for pair t -test)
 summary(data.sav$wt)
 summary(data.sav$wt2)
 wilcox.test(data.sav$wt, data.sav$wt2, paired=TRUE) 
+
+########################################################################################
 
 #correlation 
 plot(data.sav$wt, data.sav$hcy, main="Scatterplot Example", 
@@ -92,6 +99,8 @@ cor.test(data.sav$sbp, data.sav$dbp, method=c("pearson")) #normally distributed 
 
 #r <0.3 very weak, 0.3-0.5< is weak, 0.5-0.7 is moderate, >0.7 is strong
 #interpret correlation coefficent = 1.-value 2.direction 3.p-value
+
+########################################################################################
 
 #friedman test 
 library(tidyverse)
@@ -125,3 +134,5 @@ pwc <- selfesteem %>%
   )
 pwc
 #significant if p<0.05
+########################################################################################
+
