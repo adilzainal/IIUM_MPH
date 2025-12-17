@@ -11,7 +11,12 @@
 setwd("~/Desktop/Medical Statistic/R MPH IIUM")
 library(foreign)  # library to read .sav (SPSS) and .dta (STATA) files
 data.sav = read.spss("healthstatus.sav", to.data.frame = TRUE)  #SPSS
-
+########################################################################################
+#1. mann whitney u test 
+#2. kruskall wallis test
+#3. wilcoxon signed rank test
+#4. correlation (spearman)
+#5. friedman test 
 ############################################################
 #mann whitney u test (non parametric for independent t-test)
 library(psych)
